@@ -7,8 +7,8 @@ const getNumeroColunas = (parametros) => {
 }
 
 const getNumeroLinhas = (parametros) => {
-  const heigth = Dimensions.get('window').heigth * (1 - parametros.tamanhoCabecalho)
-  const numeroLinhas = Math.floor(heigth / parametros.tamanhoBloco)
+  const height = Dimensions.get('window').height * (1 - parametros.tamanhoCabecalho)
+  const numeroLinhas = Math.floor(height / parametros.tamanhoBloco)
   return numeroLinhas
 }
 
@@ -23,4 +23,4 @@ const parametros = {
 const numeroColunas = getNumeroColunas(parametros)
 const numeroLinhas = getNumeroLinhas(parametros)
 
-export default { ...parametros, numeroColunas, numeroLinhas }
+export { parametros, numeroColunas, numeroLinhas }
