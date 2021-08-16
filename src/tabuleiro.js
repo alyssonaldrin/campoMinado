@@ -41,5 +41,3 @@ export const criarTabuleiroMinado = (linhas, colunas, numeroDeMinas) => {
   const tabuleiroMinado = sortearMinas(tabuleiro, numeroDeMinas)
   return tabuleiroMinado
 }
-
-export default { criarTabuleiroMinado }
