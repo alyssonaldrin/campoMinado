@@ -2,8 +2,9 @@ import React from 'react'
 import { View, Text } from 'react-native'
 import styles from './styles'
 import Mina from '../Mina'
+import Bandeira from '../Bandeira'
 
-export default function Campo({ minado, aberto, pertoDeMinas, explodido }) {
+export default function Campo({ minado, aberto, pertoDeMinas, explodido, marcado }) {
 
   const styleCampo = [styles.campo]
 
@@ -13,7 +14,10 @@ export default function Campo({ minado, aberto, pertoDeMinas, explodido }) {
   if (explodido) {
     styleCampo.push(styles.explodido)
   }
-  if (styleCampo.length === 1) {
+  if (marcado) {
+    styleCampo.push(styles.marcado)
+  }
+  if (!aberto && !explodido) {
     styleCampo.push(styles.padrao)
   }
 
@@ -55,6 +59,7 @@ export default function Campo({ minado, aberto, pertoDeMinas, explodido }) {
           {pertoDeMinas}
         </Text>}
       {minado && aberto && <Mina />}
+      {marcado && !aberto && <Bandeira />}
     </View>
   )
 }
