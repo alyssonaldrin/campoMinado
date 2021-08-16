@@ -23,7 +23,11 @@ const styles = StyleSheet.create({
   numero: {
     fontWeight: 'bold',
     fontSize: parametros.tamanhoFonte
+  },
+  explodido: {
+    backgroundColor: 'red',
+    borderColor: 'red'
   }
 })
 
-export default styles;
+export default styles
