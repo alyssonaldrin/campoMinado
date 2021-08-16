@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native"
-import parametros from "../../parametros";
+import { parametros } from "../../parametros";
 
 const styles = StyleSheet.create({
   campo: {
