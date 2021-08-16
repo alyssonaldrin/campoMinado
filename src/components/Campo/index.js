@@ -4,7 +4,7 @@ import styles from './styles'
 import Mina from '../Mina'
 import Bandeira from '../Bandeira'
 
-export default function Campo({ minado, aberto, pertoDeMinas, explodido, marcado }) {
+export default function Campo({ minado, aberto, minasPerto, explodido, marcado }) {
 
   const styleCampo = [styles.campo]
 
@@ -22,8 +22,8 @@ export default function Campo({ minado, aberto, pertoDeMinas, explodido, marcado
   }
 
   let cor = null;
-  if (pertoDeMinas) {
-    switch (pertoDeMinas) {
+  if (minasPerto) {
+    switch (minasPerto) {
       case 1:
         cor = '#0000fd'
         break
@@ -54,9 +54,9 @@ export default function Campo({ minado, aberto, pertoDeMinas, explodido, marcado
 
   return (
     <View style={styleCampo}>
-      {!minado && aberto && pertoDeMinas > 0 &&
+      {!minado && aberto && minasPerto > 0 &&
         <Text style={[styles.numero, { color: cor }]}>
-          {pertoDeMinas}
+          {minasPerto}
         </Text>}
       {minado && aberto && <Mina />}
       {marcado && !aberto && <Bandeira />}
