@@ -1,10 +1,10 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, TouchableWithoutFeedback } from 'react-native'
 import styles from './styles'
 import Mina from '../Mina'
 import Bandeira from '../Bandeira'
 
-export default function Campo({ minado, aberto, minasPerto, explodido, marcado }) {
+export default function Campo({ minado, aberto, minasPerto, explodido, marcado, onOpen }) {
 
   const styleCampo = [styles.campo]
 
@@ -53,13 +53,15 @@ export default function Campo({ minado, aberto, minasPerto, explodido, marcado }
 
 
   return (
-    <View style={styleCampo}>
-      {!minado && aberto && minasPerto > 0 &&
-        <Text style={[styles.numero, { color: cor }]}>
-          {minasPerto}
-        </Text>}
-      {minado && aberto && <Mina />}
-      {marcado && !aberto && <Bandeira />}
-    </View>
+    <TouchableWithoutFeedback onPress={onOpen}>
+      <View style={styleCampo}>
+        {!minado && aberto && minasPerto > 0 &&
+          <Text style={[styles.numero, { color: cor }]}>
+            {minasPerto}
+          </Text>}
+        {minado && aberto && <Mina />}
+        {marcado && !aberto && <Bandeira />}
+      </View>
+    </TouchableWithoutFeedback>
   )
 }
