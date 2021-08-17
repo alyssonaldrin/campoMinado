@@ -121,3 +121,9 @@ export const toggleBandeira = (tabuleiro, linha, coluna) => {
   const campo = tabuleiro[linha][coluna]
   campo.marcado = !campo.marcado
 }
+
+export const bandeirasMarcadas = (tabuleiro) => {
+  return todosCampos(tabuleiro).filter((campo) => {
+    return campo.marcado
+  }).length
+}

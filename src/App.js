@@ -3,12 +3,17 @@ import { Text, SafeAreaView, View, Alert } from 'react-native';
 import styles from './styles';
 import { numeroColunas, numeroLinhas, parametros } from './parametros'
 import Tabuleiro from './components/Tabuleiro';
-import { abrirCampo, criarTabuleiroMinado, teveExplosao, clonarTabuleiro, ganhouJogo, mostrarMinas, toggleBandeira } from './tabuleiro'
+import Header from './components/Header';
+import { abrirCampo, criarTabuleiroMinado, teveExplosao, clonarTabuleiro, ganhouJogo, mostrarMinas, toggleBandeira, bandeirasMarcadas } from './tabuleiro'
 
 export default function App() {
 
+  const getNumeroDeMinas = (parametros, numeroLinhas, numeroColunas) => {
+    return Math.ceil(numeroLinhas * numeroColunas * parametros.nivelDificuldade)
+  }
+
   const getTabuleiroInicial = (parametros, numeroColunas, numeroLinhas) => {
-    const numeroDeMinas = Math.ceil(numeroColunas * numeroLinhas * parametros.nivelDificuldade)
+    const numeroDeMinas = getNumeroDeMinas(parametros, numeroLinhas, numeroColunas)
     return criarTabuleiroMinado(numeroLinhas, numeroColunas, numeroDeMinas)
   }
 
@@ -41,9 +46,18 @@ export default function App() {
     setTabuleiro(tabuleiroClone)
   }
 
+  const handleNovoJogoPress = () => {
+    setTabuleiro(getTabuleiroInicial(parametros, numeroColunas, numeroLinhas))
+    setGanhou(false)
+    setPerdeu(false)
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.titulo}>Campo Minado!!!</Text>
+      <Header
+        bandeirasRestantes={getNumeroDeMinas(parametros, numeroLinhas, numeroColunas) - bandeirasMarcadas(tabuleiro)}
+        onNovoJogoPress={handleNovoJogoPress}
+      />
       <View style={styles.tabuleiro}>
         <Tabuleiro tabuleiro={tabuleiro} onOpenCampo={toOpenCampo} onMarkCampo={toMarkCampo} />
       </View>
