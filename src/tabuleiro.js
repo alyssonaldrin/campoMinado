@@ -15,11 +15,7 @@ export const criarTabuleiro = (linhas, colunas) => {
 }
 
 export const sortearMinas = (tabuleiro, numeroDeMinas) => {
-  const tabuleiroMinado = tabuleiro.map((linha) => {
-    return [...linha.map((objeto) => {
-      return { ...objeto }
-    })]
-  })
+  const tabuleiroMinado = clonarTabuleiro(tabuleiro)
   const linhas = tabuleiro.length
   const colunas = tabuleiro[0].length
   let linha, coluna
@@ -40,4 +36,94 @@ export const criarTabuleiroMinado = (linhas, colunas, numeroDeMinas) => {
   const tabuleiro = criarTabuleiro(linhas, colunas)
   const tabuleiroMinado = sortearMinas(tabuleiro, numeroDeMinas)
   return tabuleiroMinado
+}
+
+export const clonarTabuleiro = (tabuleiro) => {
+  return tabuleiro.map((linha) => {
+    return [...linha.map((objeto) => {
+      return { ...objeto }
+    })]
+  })
+}
+
+export const getAdjacentes = (tabuleiro, linha, coluna) => {
+  const adjacentes = []
+  const linhasPossiveis = [linha - 1, linha, linha + 1]
+  const colunasPossiveis = [coluna - 1, coluna, coluna + 1]
+  linhasPossiveis.forEach((l) => {
+    colunasPossiveis.forEach((c) => {
+      if (l < 0 || l >= tabuleiro.length) return
+      if (c < 0 || c >= tabuleiro[0].length) return
+      if (l == linha && c == coluna) return
+      adjacentes.push(tabuleiro[l][c])
+    })
+  })
+  return adjacentes
+}
+
+export const isAdjacentesSemMinas = (adjacentes) => {
+  const adjacentesSemMinas = adjacentes.reduce((isSemMinas, campo) => {
+    if (!isSemMinas || campo.minado) return false
+    return true
+  }, true)
+  return adjacentesSemMinas
+}
+
+export const abrirCampo = (tabuleiro, linha, coluna) => {
+  const campo = tabuleiro[linha][coluna]
+  if (campo.aberto) return
+  campo.aberto = true
+  if (campo.minado) {
+    campo.explodido = true
+  } else {
+    const adjacentes = getAdjacentes(tabuleiro, linha, coluna)
+    if (isAdjacentesSemMinas(adjacentes)) {
+      adjacentes.forEach((campo) => {
+        abrirCampo(tabuleiro, campo.linha, campo.coluna)
+      })
+    } else {
+      campo.minasPerto = adjacentes.filter((campo) => {
+        return campo.minado
+      }).length
+    }
+  }
+}
+
+export const todosCampos = (tabuleiro) => {
+  return [].concat(...tabuleiro)
+}
+
+export const teveExplosao = (tabuleiro) => {
+  if (todosCampos(tabuleiro).find((campo) => {
+    return campo.explodido
+  }))
+    return true
+  return false
+}
+
+export const isCampoPendente = (campo) => {
+  return (campo.minado && !campo.marcado) || (!campo.minado && !campo.aberto)
+}
+
+export const ganhouJogo = (tabuleiro) => {
+  return todosCampos(tabuleiro).filter(isCampoPendente).length === 0
+}
+
+export const mostrarMinas = (tabuleiro) => {
+  return todosCampos(tabuleiro).filter((campo) => {
+    return campo.minado
+  }).forEach((campo) => {
+    campo.aberto = true
+  })
+}
+
+export const toggleBandeira = (tabuleiro, linha, coluna) => {
+  const campo = tabuleiro[linha][coluna]
+  campo.marcado = !campo.marcado
+}
+
+export const bandeirasMarcadas = (tabuleiro) => {
+  return todosCampos(tabuleiro).filter((campo) => {
+    return campo.marcado
+  }).length
 }
