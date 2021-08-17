@@ -38,7 +38,7 @@ export const criarTabuleiroMinado = (linhas, colunas, numeroDeMinas) => {
   return tabuleiroMinado
 }
 
-const clonarTabuleiro = (tabuleiro) => {
+export const clonarTabuleiro = (tabuleiro) => {
   return tabuleiro.map((linha) => {
     return [...linha.map((objeto) => {
       return { ...objeto }
@@ -115,4 +115,9 @@ export const mostrarMinas = (tabuleiro) => {
   }).forEach((campo) => {
     campo.aberto = true
   })
+}
+
+export const toggleBandeira = (tabuleiro, linha, coluna) => {
+  const campo = tabuleiro[linha][coluna]
+  campo.marcado = !campo.marcado
 }

@@ -3,7 +3,7 @@ import { Text, SafeAreaView, View, Alert } from 'react-native';
 import styles from './styles';
 import { numeroColunas, numeroLinhas, parametros } from './parametros'
 import Tabuleiro from './components/Tabuleiro';
-import { abrirCampo, criarTabuleiroMinado, teveExplosao, clonarTabuleiro, ganhouJogo, mostrarMinas } from './tabuleiro'
+import { abrirCampo, criarTabuleiroMinado, teveExplosao, clonarTabuleiro, ganhouJogo, mostrarMinas, toggleBandeira } from './tabuleiro'
 
 export default function App() {
 
@@ -31,11 +31,21 @@ export default function App() {
     setTabuleiro(tabuleiroClone)
   }
 
+  const toMarkCampo = (linha, coluna) => {
+    const tabuleiroClone = clonarTabuleiro(tabuleiro)
+    toggleBandeira(tabuleiroClone, linha, coluna)
+    if (ganhouJogo(tabuleiroClone)) {
+      setGanhou(true)
+      Alert.alert('Parabéns!', 'Você ganhou!')
+    }
+    setTabuleiro(tabuleiroClone)
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.titulo}>Campo Minado!!!</Text>
       <View style={styles.tabuleiro}>
-        <Tabuleiro tabuleiro={tabuleiro} onOpenCampo={toOpenCampo} />
+        <Tabuleiro tabuleiro={tabuleiro} onOpenCampo={toOpenCampo} onMarkCampo={toMarkCampo} />
       </View>
     </SafeAreaView>
   );
