@@ -19,20 +19,19 @@ export default function App() {
   }
 
   const [tabuleiro, setTabuleiro] = useState(getTabuleiroInicial(parametros, numeroColunas, numeroLinhas))
-  const [ganhou, setGanhou] = useState(false)
-  const [perdeu, setPerdeu] = useState(false)
+  const [fimDeJogo, setFimDeJogo] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const toOpenCampo = (linha, coluna) => {
     const tabuleiroClone = clonarTabuleiro(tabuleiro)
     abrirCampo(tabuleiroClone, linha, coluna)
     if (teveExplosao(tabuleiroClone)) {
-      setPerdeu(true)
+      setFimDeJogo(true)
       mostrarMinas(tabuleiroClone)
       Alert.alert('Pow!', 'Você explodiu!')
     }
     if (ganhouJogo(tabuleiroClone)) {
-      setGanhou(true)
+      setFimDeJogo(true)
       Alert.alert('Parabéns!', 'Você ganhou!')
     }
     setTabuleiro(tabuleiroClone)
@@ -67,7 +66,7 @@ export default function App() {
         onNovoJogoPress={novoJogo} onBandeiraPress={() => setIsModalOpen(true)}
       />
       <View style={styles.tabuleiro}>
-        <Tabuleiro tabuleiro={tabuleiro} onOpenCampo={toOpenCampo} onMarkCampo={toMarkCampo} />
+        <Tabuleiro tabuleiro={tabuleiro} onOpenCampo={toOpenCampo} onMarkCampo={toMarkCampo} disabled={fimDeJogo} />
       </View>
     </SafeAreaView>
   );
