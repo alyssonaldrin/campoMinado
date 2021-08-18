@@ -4,7 +4,7 @@ import styles from './styles'
 import Mina from '../Mina'
 import Bandeira from '../Bandeira'
 
-export default function Campo({ minado, aberto, minasPerto, explodido, marcado, onOpen, onMark }) {
+export default function Campo({ minado, aberto, minasPerto, explodido, marcado, onOpen, onMark, disabled }) {
 
   const styleCampo = [styles.campo]
 
@@ -53,7 +53,7 @@ export default function Campo({ minado, aberto, minasPerto, explodido, marcado, 
 
 
   return (
-    <TouchableWithoutFeedback onPress={onOpen} onLongPress={onMark}>
+    <TouchableWithoutFeedback disabled={disabled} onPress={onOpen} onLongPress={onMark}>
       <View style={styleCampo}>
         {!minado && aberto && minasPerto > 0 &&
           <Text style={[styles.numero, { color: cor }]}>
